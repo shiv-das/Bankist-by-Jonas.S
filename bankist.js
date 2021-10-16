@@ -16,12 +16,20 @@ const trnsframount = document.querySelector('.form__input--amount');
 const loanamt = document.querySelector('.form__input--loan-amount');
 const sortbtn = document.querySelector('.btn--sort');
 const row = document.querySelector('.movements__row');
+const asof = document.querySelector('.date');
+const timersec = document.querySelector('.timer');
 let totbalance;
 const movement = [200, 450, -400, 3000, -650, -130, 70, 1300];
 let len = movement.length + 1;
 let withdra = 0;
 let dep = 0;
 const interest = 10;
+const options = {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  weekday: 'long',
+};
 
 //Logged IN
 loginbtn.addEventListener('click', function (e) {
@@ -39,6 +47,9 @@ loginbtn.addEventListener('click', function (e) {
     depo.textContent = UK(add(movement)[0]) + '₹';
     withd.textContent = UK(add(movement)[1]) + '₹';
     intr.textContent = UK(calcinterest(totamount)) + '₹';
+    asof.innerHTML = '';
+    nowdate();
+    timeer();
   }
 });
 
@@ -94,13 +105,13 @@ function UK(num) {
 
 //Interest
 function calcinterest(total) {
-  const html = ` <div class="movements__row">
+  /*const html = ` <div class="movements__row">
   <div class="movements__type movements__type--deposit">${len} deposit</div>
   <div class="movements__date">today</div>
   <div class="movements__value">${UK((total * interest) / 100)}₹</div>
 </div>`;
   move.insertAdjacentHTML('afterbegin', html);
-  len = len + 1;
+  len = len + 1;*/
   return String((total * interest) / 100);
 }
 
@@ -180,3 +191,29 @@ sortbtn.addEventListener('click', function (e) {
     trans(movement);
   }
 });
+
+//Date
+const now = new Date();
+function nowdate() {
+  const html = `${new Intl.DateTimeFormat('en-UK', options).format(now)}`;
+  console.log(new Intl.DateTimeFormat('en-UK', options).format(now));
+  asof.innerHTML = html;
+}
+
+
+//Timer
+function timeer() {
+  var after = Date.now() + 1000 * 60 * 5;
+  var x = setInterval(function () {
+    var now = Date.now();
+    var dist = after - now;
+    var min = Math.floor(dist / (1000 * 60));
+    var sec = Math.floor((dist % (1000 * 60)) / 1000);
+    timersec.innerHTML = `${min}:${sec}`;
+
+    if (dist < 0) {
+      clearInterval(x);
+      loggedinUI.style.opacity = 0;
+    }
+  }, 1000);
+}
