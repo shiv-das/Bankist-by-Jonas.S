@@ -18,11 +18,15 @@ const sortbtn = document.querySelector('.btn--sort');
 const row = document.querySelector('.movements__row');
 const asof = document.querySelector('.date');
 const timersec = document.querySelector('.timer');
+const logout = document.querySelector('.form__btn--close');
+const logoutuser = document.querySelector('.form__input--user');
+const logoutpin = document.querySelector('.form__input--pin');
 let totbalance;
 const movement = [200, 450, -400, 3000, -650, -130, 70, 1300];
 let len = movement.length + 1;
 let withdra = 0;
 let dep = 0;
+let x = 0;
 const interest = 10;
 const options = {
   day: 'numeric',
@@ -217,3 +221,15 @@ function timeer() {
     }
   }, 1000);
 }
+
+// Log out
+
+logout.addEventListener('click', function (e) {
+  e.preventDefault();
+  if (logoutuser.value === 'rr' && Number(logoutpin.value) === 1111) {
+    loggedinUI.style.opacity = 0;
+    logoutuser.value = '';
+    logoutpin.value = '';
+    clearInterval(x);
+  } else alert('Invalid Input');
+});
